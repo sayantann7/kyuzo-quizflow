@@ -5,7 +5,7 @@ import Footer from '../components/layout/Footer';
 import Hero from '../components/home/Hero';
 import Features from '../components/home/Features';
 import { ArrowRight, BookOpen, Users, Trophy } from 'lucide-react';
-import Button from '../components/ui/Button';
+import ButtonCustom from '../components/ui/button-custom';
 import { Link } from 'react-router-dom';
 
 const Index = () => {
@@ -126,13 +126,13 @@ const Index = () => {
             
             <div className="text-center mt-12">
               <Link to="/dashboard">
-                <Button 
+                <ButtonCustom 
                   variant="default" 
                   icon={<ArrowRight size={18} />}
                   iconPosition="right"
                 >
                   Get Started Now
-                </Button>
+                </ButtonCustom>
               </Link>
             </div>
           </div>
@@ -183,14 +183,14 @@ const Index = () => {
                 Join thousands of students who are already mastering new skills and knowledge with Kyuzo's innovative learning platform.
               </p>
               <Link to="/dashboard">
-                <Button 
+                <ButtonCustom 
                   variant="outline" 
                   className="border-kyuzo-paper/70 text-kyuzo-paper hover:bg-kyuzo-paper/10"
                   icon={<ArrowRight size={18} />}
                   iconPosition="right"
                 >
                   Get Started for Free
-                </Button>
+                </ButtonCustom>
               </Link>
             </div>
           </div>

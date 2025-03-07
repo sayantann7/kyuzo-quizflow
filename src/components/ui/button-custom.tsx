@@ -10,7 +10,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   iconPosition?: 'left' | 'right';
 }
 
-const Button = ({
+const ButtonCustom = ({
   variant = 'default',
   size = 'md',
   children,
@@ -54,4 +54,4 @@ const Button = ({
   );
 };
 
-export default Button;
+export default ButtonCustom;

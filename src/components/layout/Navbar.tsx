@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, User, LogIn } from 'lucide-react';
-import Button from '../ui/Button';
+import ButtonCustom from '../ui/button-custom';
 import { cn } from '@/lib/utils';
 
 const Navbar = () => {
@@ -21,8 +21,8 @@ const Navbar = () => {
   const navLinks = [
     { label: 'Home', path: '/' },
     { label: 'Dashboard', path: '/dashboard' },
-    { label: 'Quizzes', path: '/quizzes' },
-    { label: 'Leaderboard', path: '/leaderboard' },
+    { label: 'Profile', path: '/profile' },
+    { label: 'About', path: '/about' },
   ];
 
   return (
@@ -57,20 +57,20 @@ const Navbar = () => {
 
         {/* Auth Buttons */}
         <div className="hidden md:flex items-center space-x-4">
-          <Button 
+          <ButtonCustom 
             variant="ghost" 
             size="sm"
             icon={<LogIn size={18} />}
           >
             Login
-          </Button>
-          <Button 
+          </ButtonCustom>
+          <ButtonCustom 
             variant="default" 
             size="sm"
             icon={<User size={18} />}
           >
             Sign Up
-          </Button>
+          </ButtonCustom>
         </div>
 
         {/* Mobile Menu Button */}
@@ -100,12 +100,12 @@ const Navbar = () => {
             </Link>
           ))}
           <div className="pt-6 flex flex-col space-y-4 w-full">
-            <Button variant="outline" className="w-full" icon={<LogIn size={18} />}>
+            <ButtonCustom variant="outline" className="w-full" icon={<LogIn size={18} />}>
               Login
-            </Button>
-            <Button variant="default" className="w-full" icon={<User size={18} />}>
+            </ButtonCustom>
+            <ButtonCustom variant="default" className="w-full" icon={<User size={18} />}>
               Sign Up
-            </Button>
+            </ButtonCustom>
           </div>
         </div>
       </div>

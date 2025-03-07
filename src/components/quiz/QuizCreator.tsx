@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import Button from '../ui/Button';
+import ButtonCustom from '../ui/button-custom';
 import { AlertTriangle, BookOpen, Clock, PlusCircle } from 'lucide-react';
 
 const QuizCreator = () => {
@@ -23,7 +23,7 @@ const QuizCreator = () => {
   };
   
   return (
-    <div className="glass-card p-6 md:p-8 max-w-md mx-auto">
+    <div className="glass-card p-6 md:p-8 max-w-lg">
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-kyuzo-gold mb-2 font-calligraphy">Create New Quiz</h2>
         <p className="text-kyuzo-paper/80 text-sm">
@@ -107,7 +107,7 @@ const QuizCreator = () => {
           </div>
           
           <div className="flex flex-col md:flex-row items-center gap-4">
-            <Button 
+            <ButtonCustom 
               type="submit"
               variant="default" 
               className="w-full md:w-auto"
@@ -115,16 +115,16 @@ const QuizCreator = () => {
               disabled={isLoading}
             >
               {isLoading ? 'Generating...' : 'Generate Quiz'}
-            </Button>
+            </ButtonCustom>
             
-            <Button 
+            <ButtonCustom 
               type="button"
               variant="outline" 
               className="w-full md:w-auto"
               icon={<PlusCircle size={18} />}
             >
               Create Manually
-            </Button>
+            </ButtonCustom>
           </div>
         </div>
       </form>
@@ -140,7 +140,7 @@ const QuizCreator = () => {
               <p className="text-sm text-kyuzo-paper">Japanese Feudal Era</p>
               <p className="text-xs text-kyuzo-paper/60">Created 2 days ago</p>
             </div>
-            <Button size="sm" variant="outline">Select</Button>
+            <ButtonCustom size="sm" variant="outline">Select</ButtonCustom>
           </div>
           <div className="flex items-center gap-3 p-3 border border-kyuzo-gold/20 rounded-md bg-kyuzo-red/5 cursor-pointer hover:bg-kyuzo-red/10 transition-colors">
             <Clock size={16} className="text-kyuzo-gold" />
@@ -148,7 +148,7 @@ const QuizCreator = () => {
               <p className="text-sm text-kyuzo-paper">Samurai Weapons</p>
               <p className="text-xs text-kyuzo-paper/60">Created 5 days ago</p>
             </div>
-            <Button size="sm" variant="outline">Select</Button>
+            <ButtonCustom size="sm" variant="outline">Select</ButtonCustom>
           </div>
         </div>
       </div>
