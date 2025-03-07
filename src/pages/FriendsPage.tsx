@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Search, UserPlus, UserCheck, Clock, Award, BookOpen, Mail } from 'lucide-react';
+import { Search, UserPlus, UserCheck, Clock, Award, BookOpen, Mail, TrendingUp } from 'lucide-react';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import ButtonCustom from '../components/ui/button-custom';
@@ -238,7 +238,10 @@ const FriendsPage = () => {
                           <div className="flex items-center justify-between">
                             <h3 className="font-medium text-kyuzo-paper">{friend.name}</h3>
                             
-                            <ButtonCustom variant="ghost" size="sm" icon={<Mail size={16} />} />
+                            <ButtonCustom variant="ghost" size="sm" icon={<Mail size={16} />}>
+                              {/* Adding empty children to fix the error */}
+                              <span className="sr-only">Message</span>
+                            </ButtonCustom>
                           </div>
                           
                           <div className="flex flex-wrap gap-3 text-xs text-kyuzo-paper/60 mt-1">
