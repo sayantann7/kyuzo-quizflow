@@ -23,13 +23,16 @@ const Navbar = () => {
   const navLinks = [
     { label: 'Home', path: '/' },
     { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Quizzes', path: '/quizzes' },
     { label: 'Friends', path: '/friends' },
     { label: 'Profile', path: '/profile' },
     { label: 'About', path: '/about' },
   ];
 
   const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    console.log('Theme changed to:', newTheme);
   };
 
   return (

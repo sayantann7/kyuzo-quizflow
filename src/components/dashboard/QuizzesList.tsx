@@ -180,7 +180,10 @@ const QuizzesList = () => {
       
       {filteredQuizzes.length > 0 && (
         <div className="mt-6 text-center">
-          <ButtonCustom variant="ghost">
+          <ButtonCustom 
+            variant="ghost"
+            onClick={() => navigate('/quizzes')}
+          >
             View All Quizzes
           </ButtonCustom>
         </div>

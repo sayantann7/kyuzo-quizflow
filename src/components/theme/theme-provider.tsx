@@ -37,11 +37,18 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     localStorage.setItem('theme', theme);
     
     // Update document class for styling
+    const root = document.documentElement;
     if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
+      root.classList.add('dark');
+      root.style.setProperty('--background', '26, 26, 26');
+      root.style.setProperty('--foreground', '247, 243, 233');
     } else {
-      document.documentElement.classList.remove('dark');
+      root.classList.remove('dark');
+      root.style.setProperty('--background', '247, 243, 233');
+      root.style.setProperty('--foreground', '26, 26, 26');
     }
+    
+    console.log('Theme updated in DOM:', theme);
   }, [theme]);
 
   // Listen for system theme changes

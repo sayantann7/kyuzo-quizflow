@@ -3,8 +3,8 @@ import React from 'react';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import { 
-  User, Mail, Calendar, Edit, Award, BookOpen, 
-  Trophy, TrendingUp, BarChart, Users, Settings 
+  User, Mail, Calendar, BookOpen, 
+  TrendingUp, BarChart, Trophy
 } from 'lucide-react';
 import ButtonCustom from '../components/ui/button-custom';
 
@@ -21,12 +21,6 @@ const Profile = () => {
     totalQuizzes: 42,
     averageScore: 78,
     streak: 7,
-    achievements: [
-      { name: "Early Bird", description: "Joined during beta", icon: Award },
-      { name: "Quiz Master", description: "Completed 10 quizzes with > 80% score", icon: BookOpen },
-      { name: "Social Butterfly", description: "Connected with 5 friends", icon: Users },
-      { name: "Streak Keeper", description: "Maintained a 7-day streak", icon: TrendingUp }
-    ],
     stats: [
       { label: "Quizzes Taken", value: 42, icon: BookOpen },
       { label: "Average Score", value: "78%", icon: BarChart },
@@ -50,9 +44,6 @@ const Profile = () => {
                   alt={user.name} 
                   className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-kyuzo-gold/30"
                 />
-                <button className="absolute bottom-0 right-0 p-1 bg-kyuzo-red rounded-full text-kyuzo-paper">
-                  <Edit size={16} />
-                </button>
               </div>
               
               <div className="flex-1">
@@ -60,15 +51,6 @@ const Profile = () => {
                   <div>
                     <h1 className="text-2xl md:text-3xl font-bold text-kyuzo-paper mb-1">{user.name}</h1>
                     <p className="text-kyuzo-paper/60">@{user.username}</p>
-                  </div>
-                  
-                  <div className="mt-4 md:mt-0 flex gap-3">
-                    <ButtonCustom variant="outline" size="sm" icon={<Settings size={16} />}>
-                      Edit Profile
-                    </ButtonCustom>
-                    <ButtonCustom variant="default" size="sm" icon={<Users size={16} />}>
-                      Add Friend
-                    </ButtonCustom>
                   </div>
                 </div>
                 
@@ -104,7 +86,7 @@ const Profile = () => {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Stats */}
             <div className="glass-card p-6">
               <h2 className="text-xl font-bold text-kyuzo-gold mb-6 font-calligraphy">Stats</h2>
@@ -126,29 +108,6 @@ const Profile = () => {
               </div>
             </div>
             
-            {/* Achievements */}
-            <div className="glass-card p-6">
-              <h2 className="text-xl font-bold text-kyuzo-gold mb-6 font-calligraphy">Achievements</h2>
-              
-              <div className="space-y-4">
-                {user.achievements.map((achievement, index) => (
-                  <div key={index} className="flex items-center gap-4 p-3 border border-kyuzo-gold/20 rounded-md bg-kyuzo-red/5">
-                    <div className="p-2 rounded-full bg-kyuzo-red/20">
-                      <achievement.icon size={18} className="text-kyuzo-gold" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-kyuzo-paper">{achievement.name}</p>
-                      <p className="text-xs text-kyuzo-paper/60">{achievement.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="mt-6 text-center">
-                <ButtonCustom variant="ghost">View All Achievements</ButtonCustom>
-              </div>
-            </div>
-            
             {/* Recent Activity */}
             <div className="glass-card p-6">
               <h2 className="text-xl font-bold text-kyuzo-gold mb-6 font-calligraphy">Recent Activity</h2>
@@ -159,14 +118,6 @@ const Profile = () => {
                   <div className="flex-1">
                     <p className="text-sm text-kyuzo-paper">Completed "Japanese Feudal History" quiz</p>
                     <p className="text-xs text-kyuzo-paper/60">2 hours ago • Score: 85%</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-3 p-3 border border-kyuzo-gold/20 rounded-md bg-kyuzo-red/5">
-                  <Award size={16} className="text-kyuzo-gold" />
-                  <div className="flex-1">
-                    <p className="text-sm text-kyuzo-paper">Unlocked "Quiz Master" achievement</p>
-                    <p className="text-xs text-kyuzo-paper/60">1 day ago</p>
                   </div>
                 </div>
                 
@@ -183,6 +134,14 @@ const Profile = () => {
                   <div className="flex-1">
                     <p className="text-sm text-kyuzo-paper">Created "Edo Period Art & Culture" quiz</p>
                     <p className="text-xs text-kyuzo-paper/60">3 days ago</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3 p-3 border border-kyuzo-gold/20 rounded-md bg-kyuzo-red/5">
+                  <BookOpen size={16} className="text-kyuzo-gold" />
+                  <div className="flex-1">
+                    <p className="text-sm text-kyuzo-paper">Completed "Basic Japanese Phrases" quiz</p>
+                    <p className="text-xs text-kyuzo-paper/60">5 days ago • Score: 92%</p>
                   </div>
                 </div>
               </div>
