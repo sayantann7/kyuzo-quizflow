@@ -1,9 +1,11 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ButtonCustom from '../ui/button-custom';
-import { AlertTriangle, BookOpen, Clock, PlusCircle } from 'lucide-react';
+import { AlertTriangle, BookOpen, PlusCircle } from 'lucide-react';
 
 const QuizCreator = () => {
+  const navigate = useNavigate();
   const [topic, setTopic] = useState('');
   const [difficulty, setDifficulty] = useState('intermediate');
   const [questionCount, setQuestionCount] = useState(10);
@@ -122,36 +124,13 @@ const QuizCreator = () => {
               variant="outline" 
               className="w-full md:w-auto"
               icon={<PlusCircle size={18} />}
+              onClick={() => navigate('/create-quiz')}
             >
               Create Manually
             </ButtonCustom>
           </div>
         </div>
       </form>
-      
-      <div className="mt-6 pt-6 border-t border-kyuzo-gold/10">
-        <h3 className="text-sm font-medium text-kyuzo-gold mb-3">
-          Use Previous Quiz as Context
-        </h3>
-        <div className="grid grid-cols-1 gap-3">
-          <div className="flex items-center gap-3 p-3 border border-kyuzo-gold/20 rounded-md bg-kyuzo-red/5 cursor-pointer hover:bg-kyuzo-red/10 transition-colors">
-            <Clock size={16} className="text-kyuzo-gold" />
-            <div className="flex-1">
-              <p className="text-sm text-kyuzo-paper">Japanese Feudal Era</p>
-              <p className="text-xs text-kyuzo-paper/60">Created 2 days ago</p>
-            </div>
-            <ButtonCustom size="sm" variant="outline">Select</ButtonCustom>
-          </div>
-          <div className="flex items-center gap-3 p-3 border border-kyuzo-gold/20 rounded-md bg-kyuzo-red/5 cursor-pointer hover:bg-kyuzo-red/10 transition-colors">
-            <Clock size={16} className="text-kyuzo-gold" />
-            <div className="flex-1">
-              <p className="text-sm text-kyuzo-paper">Samurai Weapons</p>
-              <p className="text-xs text-kyuzo-paper/60">Created 5 days ago</p>
-            </div>
-            <ButtonCustom size="sm" variant="outline">Select</ButtonCustom>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
