@@ -1,13 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, User, LogIn } from 'lucide-react';
+import { Menu, X, User, LogIn, Sun, Moon } from 'lucide-react';
 import ButtonCustom from '../ui/button-custom';
 import { cn } from '@/lib/utils';
+import { useTheme } from '../theme/theme-provider';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,9 +23,14 @@ const Navbar = () => {
   const navLinks = [
     { label: 'Home', path: '/' },
     { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Friends', path: '/friends' },
     { label: 'Profile', path: '/profile' },
     { label: 'About', path: '/about' },
   ];
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
 
   return (
     <nav
@@ -55,31 +62,54 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Auth Buttons */}
+        {/* Auth Buttons and Theme Toggle */}
         <div className="hidden md:flex items-center space-x-4">
-          <ButtonCustom 
-            variant="ghost" 
-            size="sm"
-            icon={<LogIn size={18} />}
+          <button
+            className="p-2 rounded-full text-kyuzo-paper hover:bg-kyuzo-red/10 transition-colors"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
           >
-            Login
-          </ButtonCustom>
-          <ButtonCustom 
-            variant="default" 
-            size="sm"
-            icon={<User size={18} />}
-          >
-            Sign Up
-          </ButtonCustom>
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          
+          <Link to="/login">
+            <ButtonCustom 
+              variant="ghost" 
+              size="sm"
+              icon={<LogIn size={18} />}
+            >
+              Login
+            </ButtonCustom>
+          </Link>
+          
+          <Link to="/signup">
+            <ButtonCustom 
+              variant="default" 
+              size="sm"
+              icon={<User size={18} />}
+            >
+              Sign Up
+            </ButtonCustom>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-kyuzo-paper focus:outline-none"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          <button
+            className="p-2 rounded-full text-kyuzo-paper hover:bg-kyuzo-red/10 transition-colors"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          
+          <button
+            className="md:hidden text-kyuzo-paper focus:outline-none"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -100,12 +130,16 @@ const Navbar = () => {
             </Link>
           ))}
           <div className="pt-6 flex flex-col space-y-4 w-full">
-            <ButtonCustom variant="outline" className="w-full" icon={<LogIn size={18} />}>
-              Login
-            </ButtonCustom>
-            <ButtonCustom variant="default" className="w-full" icon={<User size={18} />}>
-              Sign Up
-            </ButtonCustom>
+            <Link to="/login" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
+              <ButtonCustom variant="outline" className="w-full" icon={<LogIn size={18} />}>
+                Login
+              </ButtonCustom>
+            </Link>
+            <Link to="/signup" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
+              <ButtonCustom variant="default" className="w-full" icon={<User size={18} />}>
+                Sign Up
+              </ButtonCustom>
+            </Link>
           </div>
         </div>
       </div>

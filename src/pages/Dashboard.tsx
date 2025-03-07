@@ -1,9 +1,9 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import QuizCreator from '../components/quiz/QuizCreator';
-import RecentActivity from '../components/dashboard/RecentActivity';
 import QuizzesList from '../components/dashboard/QuizzesList';
 import Friends from '../components/dashboard/Friends';
 import Leaderboard from '../components/dashboard/Leaderboard';
@@ -11,6 +11,8 @@ import { Award, TrendingUp, BookOpen, Target } from 'lucide-react';
 import ButtonCustom from '../components/ui/button-custom';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  
   // Mock user data
   const userData = {
     name: "Akira",
@@ -72,10 +74,14 @@ const Dashboard = () => {
                 <ButtonCustom 
                   variant="default" 
                   icon={<BookOpen size={18} />}
+                  onClick={() => navigate('/create-quiz')}
                 >
                   Create Quiz
                 </ButtonCustom>
-                <ButtonCustom variant="outline">
+                <ButtonCustom 
+                  variant="outline"
+                  onClick={() => navigate('/quizzes')}
+                >
                   Browse Quizzes
                 </ButtonCustom>
               </div>
@@ -127,13 +133,8 @@ const Dashboard = () => {
             </div>
             
             {/* Middle Column */}
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-8 lg:col-span-2">
               <QuizzesList />
-            </div>
-            
-            {/* Right Column */}
-            <div className="flex flex-col gap-8">
-              <RecentActivity />
               <Leaderboard />
             </div>
           </div>

@@ -1,178 +1,80 @@
 
-import React, { useState } from 'react';
-import { Medal, Users } from 'lucide-react';
-import Button from '../ui/Button';
-
-interface LeaderboardUser {
-  id: string;
-  name: string;
-  avatar?: string;
-  points: number;
-  rank: number;
-  isCurrentUser?: boolean;
-  change?: 'up' | 'down' | 'same';
-}
+import React from 'react';
+import { Award, TrendingUp, BookOpen } from 'lucide-react';
+import ButtonCustom from '../ui/button-custom';
 
 interface LeaderboardProps {
-  users: LeaderboardUser[];
+  leaderboard: {
+    id: number;
+    rank: number;
+    name: string;
+    avatar: string;
+    score: number;
+    quizzesTaken: number;
+    streak: number;
+  }[];
   title?: string;
-  period?: 'day' | 'week' | 'month' | 'all-time';
 }
 
-const Leaderboard = ({ 
-  users, 
-  title = "Leaderboard", 
-  period = 'week' 
-}: LeaderboardProps) => {
-  const [selectedPeriod, setSelectedPeriod] = useState<'day' | 'week' | 'month' | 'all-time'>(period);
-  
-  const getChangeIndicator = (change?: 'up' | 'down' | 'same') => {
-    if (!change || change === 'same') return null;
-    
-    return (
-      <span 
-        className={`text-xs ${change === 'up' ? 'text-green-400' : 'text-red-400'} ml-1`}
-      >
-        {change === 'up' ? '▲' : '▼'}
-      </span>
-    );
-  };
-  
-  const getMedalColor = (rank: number) => {
-    switch (rank) {
-      case 1:
-        return 'text-yellow-400';
-      case 2:
-        return 'text-gray-300';
-      case 3:
-        return 'text-amber-600';
-      default:
-        return 'text-kyuzo-paper/40';
-    }
-  };
-  
+const Leaderboard = ({ leaderboard, title = "Leaderboard" }: LeaderboardProps) => {
   return (
-    <div className="glass-card overflow-hidden">
-      <div className="flex items-center justify-between p-4 border-b border-kyuzo-gold/10">
-        <div className="flex items-center gap-2">
-          <Trophy size={20} className="text-kyuzo-gold" />
-          <h3 className="text-lg font-bold text-kyuzo-gold">{title}</h3>
-        </div>
-        <Button variant="outline" size="sm">View Full</Button>
+    <div className="glass-card p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl font-bold text-kyuzo-gold font-calligraphy">{title}</h2>
+        <ButtonCustom variant="ghost" size="sm">
+          View All
+        </ButtonCustom>
       </div>
       
-      <div className="p-4 border-b border-kyuzo-gold/10">
-        <div className="flex space-x-2">
-          <Button 
-            size="sm" 
-            variant={selectedPeriod === 'day' ? 'default' : 'ghost'}
-            onClick={() => setSelectedPeriod('day')}
-          >
-            Today
-          </Button>
-          <Button 
-            size="sm" 
-            variant={selectedPeriod === 'week' ? 'default' : 'ghost'}
-            onClick={() => setSelectedPeriod('week')}
-          >
-            This Week
-          </Button>
-          <Button 
-            size="sm" 
-            variant={selectedPeriod === 'month' ? 'default' : 'ghost'}
-            onClick={() => setSelectedPeriod('month')}
-          >
-            This Month
-          </Button>
-          <Button 
-            size="sm" 
-            variant={selectedPeriod === 'all-time' ? 'default' : 'ghost'}
-            onClick={() => setSelectedPeriod('all-time')}
-          >
-            All Time
-          </Button>
+      {leaderboard.length === 0 ? (
+        <div className="text-center py-8">
+          <p className="text-kyuzo-paper/70">No leaderboard data available</p>
         </div>
-      </div>
-      
-      <div className="py-2">
-        {users.length === 0 ? (
-          <div className="p-4 text-center text-kyuzo-paper/60">
-            <p>No data available for this period</p>
-          </div>
-        ) : (
-          <div className="divide-y divide-kyuzo-gold/10">
-            {users.map((user) => (
-              <div 
-                key={user.id} 
-                className={`p-4 transition-colors
-                  ${user.isCurrentUser ? 'bg-kyuzo-red/10' : 'hover:bg-kyuzo-red/5'}`}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 flex items-center justify-center">
-                    {user.rank <= 3 ? (
-                      <Medal size={20} className={getMedalColor(user.rank)} />
-                    ) : (
-                      <span className="text-sm text-kyuzo-paper/60">{user.rank}</span>
-                    )}
-                  </div>
-                  
-                  <div className="w-10 h-10 rounded-full bg-kyuzo-black/50 border border-kyuzo-gold/20 overflow-hidden flex-shrink-0">
-                    {user.avatar ? (
-                      <img 
-                        src={user.avatar} 
-                        alt={user.name} 
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Users size={18} className="text-kyuzo-paper/60" />
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className={`font-medium ${user.isCurrentUser ? 'text-kyuzo-gold' : 'text-kyuzo-paper'}`}>
-                          {user.name}
-                          {user.isCurrentUser && <span className="ml-2 text-xs">(You)</span>}
-                        </p>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="text-kyuzo-paper">{user.points.toLocaleString()} XP</span>
-                        {getChangeIndicator(user.change)}
-                      </div>
-                    </div>
-                  </div>
+      ) : (
+        <div className="space-y-4">
+          {leaderboard.map((user) => (
+            <div 
+              key={user.id} 
+              className={`flex items-center gap-4 p-4 rounded-md ${
+                user.rank === 1 
+                  ? 'bg-gradient-to-r from-amber-500/20 to-yellow-400/10 border border-yellow-400/30' 
+                  : user.rank === 2 
+                    ? 'bg-gradient-to-r from-gray-400/20 to-gray-300/10 border border-gray-400/30' 
+                    : user.rank === 3 
+                      ? 'bg-gradient-to-r from-amber-700/20 to-amber-600/10 border border-amber-700/30' 
+                      : 'bg-kyuzo-red/5 border border-kyuzo-gold/10'
+              }`}
+            >
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-kyuzo-black text-kyuzo-gold font-bold">
+                {user.rank}
+              </div>
+              
+              <img 
+                src={user.avatar} 
+                alt={user.name} 
+                className="w-10 h-10 rounded-full"
+              />
+              
+              <div className="flex-1">
+                <p className="font-medium text-kyuzo-paper">{user.name}</p>
+                <div className="flex gap-3 text-xs text-kyuzo-paper/60 mt-1">
+                  <span className="flex items-center gap-1">
+                    <Award size={12} className="text-kyuzo-gold" /> {user.score} XP
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <BookOpen size={12} /> {user.quizzesTaken} quizzes
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <TrendingUp size={12} /> {user.streak} day streak
+                  </span>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-      </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
-
-const Trophy = ({ size = 24, className = "" }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
-    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
-    <path d="M4 22h16" />
-    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
-    <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
-    <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
-  </svg>
-);
 
 export default Leaderboard;
