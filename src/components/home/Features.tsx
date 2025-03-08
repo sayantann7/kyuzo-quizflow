@@ -23,7 +23,10 @@ const Feature = ({ icon, title, description, delay }: FeatureProps) => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('animate-fade-in');
+          if (featureRef.current) {
+            featureRef.current.style.opacity = '1';
+            featureRef.current.style.transform = 'translateY(0)';
+          }
           observer.unobserve(entry.target);
         }
       });
@@ -46,7 +49,12 @@ const Feature = ({ icon, title, description, delay }: FeatureProps) => {
   return (
     <div 
       ref={featureRef}
-      className={`glass-card p-6 opacity-0 ${delay}`}
+      className="glass-card p-6 transition-all duration-700 ease-in-out"
+      style={{ 
+        opacity: 0, 
+        transform: 'translateY(20px)',
+        transitionDelay: delay 
+      }}
     >
       <div className="bg-kyuzo-red/20 p-3 rounded-lg inline-block mb-4">
         <div className="text-kyuzo-gold">
@@ -70,7 +78,9 @@ const Features = () => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('animate-fade-in');
+          if (titleRef.current) {
+            titleRef.current.style.opacity = '1';
+          }
           observer.unobserve(entry.target);
         }
       });
@@ -94,37 +104,37 @@ const Features = () => {
       icon: <BookOpen size={24} />,
       title: "AI-Powered Quizzes",
       description: "Generate personalized quizzes on any topic with just a few clicks. Our AI creates engaging questions tailored to your level.",
-      delay: "animate-delay-100"
+      delay: "100ms"
     },
     {
       icon: <Users size={24} />,
       title: "Social Learning",
       description: "Connect with friends, share your progress, and challenge each other to create a supportive, competitive learning environment.",
-      delay: "animate-delay-200"
+      delay: "200ms"
     },
     {
       icon: <TrendingUp size={24} />,
       title: "Performance Tracking",
       description: "Monitor your progress over time with detailed analytics, identifying strengths and areas for improvement.",
-      delay: "animate-delay-300"
+      delay: "300ms"
     },
     {
       icon: <Trophy size={24} />,
       title: "Leaderboards",
       description: "Climb the ranks and compare your performance with friends and the global community through our dynamic leaderboard system.",
-      delay: "animate-delay-100"
+      delay: "100ms"
     },
     {
       icon: <Brain size={24} />,
       title: "Contextual Learning",
       description: "Create new quizzes based on your past performance, ensuring each new challenge builds on your existing knowledge.",
-      delay: "animate-delay-200"
+      delay: "200ms"
     },
     {
       icon: <Rocket size={24} />,
       title: "Achievement System",
       description: "Earn badges and rewards as you progress, maintaining motivation and celebrating your learning milestones.",
-      delay: "animate-delay-300"
+      delay: "300ms"
     }
   ];
   
@@ -140,12 +150,13 @@ const Features = () => {
           </div>
           <h2 
             ref={titleRef}
-            className="text-3xl md:text-4xl font-bold mb-6 opacity-0 font-calligraphy"
+            className="text-3xl md:text-4xl font-bold mb-6 font-calligraphy transition-opacity duration-700 ease-in-out"
+            style={{ opacity: 0 }}
           >
             <span className="text-kyuzo-paper">Forge Your Path to</span>{" "}
             <span className="text-kyuzo-gold">Knowledge Mastery</span>
           </h2>
-          <p className="text-kyuzo-paper/80 max-w-2xl mx-auto animate-fade-in animate-delay-200">
+          <p className="text-kyuzo-paper/80 max-w-2xl mx-auto">
             Kyuzo combines cutting-edge AI technology with social motivation to create a learning experience 
             that adapts to your needs and keeps you engaged.
           </p>

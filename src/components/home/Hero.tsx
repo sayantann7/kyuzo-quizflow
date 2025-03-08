@@ -11,7 +11,7 @@ const Hero = () => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('animate-fade-in');
+          entry.target.classList.add('visible');
           observer.unobserve(entry.target);
         }
       });
@@ -47,18 +47,19 @@ const Hero = () => {
             
             <h1 
               ref={titleRef}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold font-calligraphy mb-6 opacity-0"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold font-calligraphy mb-6 opacity-0 transition-opacity duration-700 ease-in-out"
+              style={{ opacity: 0 }}
             >
               <span className="block text-kyuzo-paper">Master Your Knowledge</span>
               <span className="block text-kyuzo-gold mt-2">Challenge Your Mind</span>
             </h1>
             
-            <p className="text-kyuzo-paper/90 text-lg mb-8 max-w-xl animate-fade-in animate-delay-200">
+            <p className="text-kyuzo-paper/90 text-lg mb-8 max-w-xl">
               Create personalized quizzes, connect with friends, and climb the ranks. 
               Kyuzo's intelligent platform adapts to your learning style for continuous improvement.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center gap-4 animate-fade-in animate-delay-300">
+            <div className="flex flex-col sm:flex-row items-center gap-4">
               <Link to="/dashboard">
                 <ButtonCustom 
                   variant="default" 

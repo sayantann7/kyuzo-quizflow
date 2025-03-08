@@ -193,9 +193,20 @@
   .btn-outline:active {
     @apply scale-95;
   }
+  
+  /* Fix for animation visibility */
+  .visible {
+    opacity: 1 !important;
+  }
 }
 
 /* Animation utilities */
+@keyframes brush-stroke {
+  to {
+    width: 100%;
+  }
+}
+
 @layer utilities {
   .animate-delay-100 {
     animation-delay: 100ms;

@@ -1,299 +1,246 @@
 
 import React, { useState } from 'react';
-import Navbar from '../components/layout/Navbar';
-import Footer from '../components/layout/Footer';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Search, Filter, Plus, BarChart4 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import ButtonCustom from '@/components/ui/button-custom';
+import { Button } from '@/components/ui/button';
+import QuizCard from '@/components/quiz/QuizCard';
 import { Link } from 'react-router-dom';
-import { Filter, BookOpen, Clock, Search, Plus } from 'lucide-react';
-import ButtonCustom from '../components/ui/button-custom';
+import { useTheme } from '../components/theme/theme-provider';
 
-interface QuizItem {
-  id: string;
-  title: string;
-  difficulty: 'beginner' | 'intermediate' | 'advanced' | 'master';
-  questions: number;
-  createdAt: string;
-  tags: string[];
-  lastAttempt?: string;
-  bestScore?: number;
-}
+// Mock quiz data 
+const quizzes = [
+  {
+    id: '1',
+    title: 'JavaScript Fundamentals',
+    category: 'Programming',
+    difficulty: 'Intermediate',
+    questionCount: 15,
+    completedCount: 352,
+    coverImage: 'https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2274&q=80',
+    description: 'Test your knowledge of JavaScript basics, including variables, functions, and control flow.',
+    date: '2023-08-15'
+  },
+  {
+    id: '2',
+    title: 'World Geography',
+    category: 'Education',
+    difficulty: 'Easy',
+    questionCount: 20,
+    completedCount: 123,
+    coverImage: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2333&q=80',
+    description: 'Explore countries, capitals, and landmarks in this beginner-friendly geography quiz.',
+    date: '2023-09-01'
+  },
+  {
+    id: '3',
+    title: 'MCU Trivia Challenge',
+    category: 'Entertainment',
+    difficulty: 'Hard',
+    questionCount: 25,
+    completedCount: 748,
+    coverImage: 'https://images.unsplash.com/photo-1635805737707-575885ab0820?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2274&q=80',
+    description: 'The ultimate challenge for Marvel Cinematic Universe fans. Test your knowledge of characters, plots, and easter eggs.',
+    date: '2023-09-15'
+  },
+  {
+    id: '4',
+    title: 'React Hooks Deep Dive',
+    category: 'Programming',
+    difficulty: 'Expert',
+    questionCount: 12,
+    completedCount: 93,
+    coverImage: 'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2370&q=80',
+    description: 'Advanced questions about React Hooks, their usage patterns, and common pitfalls.',
+    date: '2023-09-30'
+  },
+  {
+    id: '5',
+    title: 'Ancient Civilizations',
+    category: 'History',
+    difficulty: 'Intermediate',
+    questionCount: 18,
+    completedCount: 215,
+    coverImage: 'https://images.unsplash.com/photo-1669651187604-f0ac9a156fdf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2370&q=80',
+    description: 'Journey through Egypt, Greece, Rome, and more. Learn about their contributions to modern society.',
+    date: '2023-10-10'
+  },
+  {
+    id: '6',
+    title: 'Music Theory Basics',
+    category: 'Arts',
+    difficulty: 'Easy',
+    questionCount: 10,
+    completedCount: 86,
+    coverImage: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2370&q=80',
+    description: 'Learn about notes, scales, and basic harmony in this introductory music theory quiz.',
+    date: '2023-10-20'
+  }
+];
+
+// Add completed property to some quizzes
+const myQuizzes = quizzes.map((quiz, index) => ({
+  ...quiz,
+  completed: index % 2 === 0,
+  score: index % 2 === 0 ? Math.floor(Math.random() * 100) : null
+}));
 
 const Quizzes = () => {
-  const [filter, setFilter] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
-
-  // Sample quiz data
-  const quizzes: QuizItem[] = [
-    {
-      id: 'q1',
-      title: 'Japanese Feudal History',
-      difficulty: 'intermediate',
-      questions: 15,
-      createdAt: '2023-10-12',
-      tags: ['history', 'japan', 'feudal'],
-      lastAttempt: '2 days ago',
-      bestScore: 85
-    },
-    {
-      id: 'q2',
-      title: 'Samurai Weapons & Armor',
-      difficulty: 'advanced',
-      questions: 20,
-      createdAt: '2023-10-08',
-      tags: ['weapons', 'samurai', 'martial arts'],
-      lastAttempt: '1 week ago',
-      bestScore: 72
-    },
-    {
-      id: 'q3',
-      title: 'Edo Period Art & Culture',
-      difficulty: 'intermediate',
-      questions: 12,
-      createdAt: '2023-10-02',
-      tags: ['art', 'culture', 'edo'],
-      lastAttempt: '3 weeks ago',
-      bestScore: 90
-    },
-    {
-      id: 'q4',
-      title: 'Basic Japanese Phrases',
-      difficulty: 'beginner',
-      questions: 10,
-      createdAt: '2023-09-25',
-      tags: ['language', 'basics', 'phrases']
-    },
-    {
-      id: 'q5',
-      title: 'Meiji Restoration',
-      difficulty: 'advanced',
-      questions: 18,
-      createdAt: '2023-09-18',
-      tags: ['history', 'meiji', 'restoration'],
-      lastAttempt: '1 month ago',
-      bestScore: 78
-    },
-    {
-      id: 'q6',
-      title: 'Japanese Mythology',
-      difficulty: 'intermediate',
-      questions: 15,
-      createdAt: '2023-09-10',
-      tags: ['mythology', 'folklore', 'religion'],
-      lastAttempt: '2 months ago',
-      bestScore: 83
-    },
-    {
-      id: 'q7',
-      title: 'Modern Japan',
-      difficulty: 'beginner',
-      questions: 12,
-      createdAt: '2023-08-30',
-      tags: ['modern', 'contemporary', 'society']
-    },
-    {
-      id: 'q8',
-      title: 'Japanese Traditional Food',
-      difficulty: 'beginner',
-      questions: 10,
-      createdAt: '2023-08-15',
-      tags: ['food', 'cuisine', 'traditional'],
-      lastAttempt: '3 months ago',
-      bestScore: 95
-    }
-  ];
-
-  // Filter and search quizzes
-  const filteredQuizzes = quizzes
-    .filter(quiz => {
-      // Apply difficulty filter
-      if (filter !== 'all' && quiz.difficulty !== filter) {
-        return false;
-      }
-      
-      // Apply search filter
-      if (searchQuery.trim() !== '') {
-        const query = searchQuery.toLowerCase();
-        return (
-          quiz.title.toLowerCase().includes(query) ||
-          quiz.tags.some(tag => tag.toLowerCase().includes(query))
-        );
-      }
-      
-      return true;
-    });
-
-  // Map difficulty to color
-  const difficultyColor = {
-    beginner: 'bg-green-500/20 text-green-400',
-    intermediate: 'bg-yellow-500/20 text-yellow-400',
-    advanced: 'bg-orange-500/20 text-orange-400',
-    master: 'bg-red-500/20 text-red-400'
-  };
-
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('all');
+  const { theme } = useTheme();
+  
+  const filteredQuizzes = myQuizzes.filter(quiz => {
+    const matchesSearch = quiz.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         quiz.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         quiz.description.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    if (activeTab === 'all') return matchesSearch;
+    if (activeTab === 'completed') return matchesSearch && quiz.completed;
+    if (activeTab === 'incomplete') return matchesSearch && !quiz.completed;
+    
+    return matchesSearch;
+  });
+  
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold mb-2 font-calligraphy">
+          <span className="text-kyuzo-gold">My</span>{" "}
+          <span className="text-kyuzo-paper dark:text-kyuzo-paper light:text-kyuzo-black">Quizzes</span>
+        </h1>
+        <p className="text-kyuzo-paper/70 dark:text-kyuzo-paper/70 light:text-kyuzo-black/70">
+          Manage and track all your created and completed quizzes
+        </p>
+      </div>
       
-      <main className="flex-1 pt-24 pb-12 px-6 md:px-12">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-kyuzo-gold mb-4 font-calligraphy">Your Quizzes</h1>
-            <p className="text-kyuzo-paper/70 mb-6">
-              Browse, search, and manage all your created and saved quizzes.
-            </p>
-            
-            {/* Search and Create New */}
-            <div className="flex flex-col sm:flex-row justify-between gap-4 mb-8">
-              <div className="relative flex-1">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <Search size={18} className="text-kyuzo-paper/50" />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Search by title or tag..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-kyuzo-black/50 text-kyuzo-paper border border-kyuzo-gold/20 rounded-md focus:outline-none focus:ring-2 focus:ring-kyuzo-gold/30"
-                />
-              </div>
-              
-              <Link to="/create-quiz">
-                <ButtonCustom 
-                  variant="default" 
-                  size="default"
-                  icon={<Plus size={18} />}
-                >
-                  Create New Quiz
-                </ButtonCustom>
-              </Link>
-            </div>
-            
-            {/* Filters */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              <ButtonCustom 
-                variant={filter === 'all' ? 'default' : 'ghost'} 
-                size="sm"
-                onClick={() => setFilter('all')}
-              >
-                All
-              </ButtonCustom>
-              <ButtonCustom 
-                variant={filter === 'beginner' ? 'default' : 'ghost'} 
-                size="sm"
-                onClick={() => setFilter('beginner')}
-              >
-                Beginner
-              </ButtonCustom>
-              <ButtonCustom 
-                variant={filter === 'intermediate' ? 'default' : 'ghost'} 
-                size="sm"
-                onClick={() => setFilter('intermediate')}
-              >
-                Intermediate
-              </ButtonCustom>
-              <ButtonCustom 
-                variant={filter === 'advanced' ? 'default' : 'ghost'} 
-                size="sm"
-                onClick={() => setFilter('advanced')}
-              >
-                Advanced
-              </ButtonCustom>
-              <ButtonCustom 
-                variant="ghost" 
-                size="sm"
-                icon={<Filter size={14} />}
-              >
-                More Filters
-              </ButtonCustom>
-            </div>
-          </div>
-
-          {/* Quizzes Grid */}
+      <div className="flex flex-col md:flex-row justify-between mb-6 space-y-4 md:space-y-0">
+        <div className="relative w-full md:w-1/3">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-kyuzo-paper/50" size={18} />
+          <Input
+            placeholder="Search quizzes..."
+            className="pl-10 bg-kyuzo-black/20 border-kyuzo-gold/20"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        
+        <div className="flex space-x-3">
+          <Button variant="outline" size="sm" className="border-kyuzo-gold/30 text-kyuzo-gold">
+            <Filter size={16} className="mr-2" />
+            Filters
+          </Button>
+          
+          <Link to="/create-quiz">
+            <ButtonCustom 
+              variant="default" 
+              icon={<Plus size={16} />}
+              iconPosition="left"
+            >
+              Create New Quiz
+            </ButtonCustom>
+          </Link>
+        </div>
+      </div>
+      
+      <Tabs defaultValue="all" className="mb-8" onValueChange={setActiveTab}>
+        <TabsList className="bg-kyuzo-black/30 border border-kyuzo-gold/20">
+          <TabsTrigger value="all">All Quizzes</TabsTrigger>
+          <TabsTrigger value="completed">Completed</TabsTrigger>
+          <TabsTrigger value="incomplete">Not Attempted</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="all" className="mt-6">
           {filteredQuizzes.length === 0 ? (
-            <div className="glass-card p-12 text-center">
-              <p className="text-xl text-kyuzo-paper/60 mb-4">No quizzes found</p>
-              <p className="text-kyuzo-paper/50 mb-6">Try adjusting your filters or create a new quiz.</p>
-              <Link to="/create-quiz">
-                <ButtonCustom 
-                  variant="default" 
-                  icon={<Plus size={18} />}
-                >
-                  Create New Quiz
-                </ButtonCustom>
-              </Link>
+            <div className="text-center py-12">
+              <div className="mb-4 flex justify-center">
+                <BarChart4 size={48} className="text-kyuzo-paper/30" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">No quizzes found</h3>
+              <p className="text-kyuzo-paper/60">
+                {searchTerm ? "Try adjusting your search term" : "Start by creating your first quiz"}
+              </p>
+              {!searchTerm && (
+                <div className="mt-4">
+                  <Link to="/create-quiz">
+                    <ButtonCustom 
+                      variant="default" 
+                      size="sm"
+                      icon={<Plus size={16} />}
+                    >
+                      Create New Quiz
+                    </ButtonCustom>
+                  </Link>
+                </div>
+              )}
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredQuizzes.map((quiz) => (
-                <div key={quiz.id} className="glass-card overflow-hidden flex flex-col">
-                  <div className="p-5 flex-grow">
-                    <h3 className="text-lg font-medium text-kyuzo-paper mb-2">{quiz.title}</h3>
-                    
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${difficultyColor[quiz.difficulty]}`}>
-                        {quiz.difficulty.charAt(0).toUpperCase() + quiz.difficulty.slice(1)}
-                      </span>
-                      
-                      {quiz.tags.slice(0, 2).map((tag, idx) => (
-                        <span key={idx} className="text-xs px-2 py-0.5 rounded-full bg-kyuzo-red/10 text-kyuzo-paper/70">
-                          {tag}
-                        </span>
-                      ))}
-                      
-                      {quiz.tags.length > 2 && (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-kyuzo-black/40 text-kyuzo-paper/50">
-                          +{quiz.tags.length - 2}
-                        </span>
-                      )}
-                    </div>
-                    
-                    <div className="flex items-center gap-2 mb-1 text-kyuzo-paper/60 text-sm">
-                      <BookOpen size={14} />
-                      <span>{quiz.questions} questions</span>
-                    </div>
-                    
-                    <div className="flex items-center gap-2 text-kyuzo-paper/60 text-sm">
-                      <Clock size={14} />
-                      <span>Created: {new Date(quiz.createdAt).toLocaleDateString()}</span>
-                    </div>
-                    
-                    {quiz.lastAttempt && (
-                      <div className="mt-3 pt-3 border-t border-kyuzo-gold/10">
-                        <div className="flex justify-between">
-                          <span className="text-xs text-kyuzo-paper/60">Last attempt: {quiz.lastAttempt}</span>
-                          {quiz.bestScore && (
-                            <span className="text-xs text-kyuzo-gold">Best: {quiz.bestScore}%</span>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="p-4 bg-kyuzo-red/5 border-t border-kyuzo-gold/10 flex gap-2">
-                    <Link to={`/attempt-quiz/${quiz.id}`} className="flex-1">
-                      <ButtonCustom 
-                        variant="default" 
-                        size="sm"
-                        className="w-full"
-                      >
-                        Take Quiz
-                      </ButtonCustom>
-                    </Link>
-                    <ButtonCustom 
-                      variant="outline" 
-                      size="sm"
-                      className="flex-1"
-                    >
-                      Edit
-                    </ButtonCustom>
-                  </div>
-                </div>
+              {filteredQuizzes.map(quiz => (
+                <Link to={`/attempt-quiz/${quiz.id}`} key={quiz.id}>
+                  <QuizCard
+                    key={quiz.id}
+                    title={quiz.title}
+                    description={quiz.description}
+                    category={quiz.category}
+                    difficulty={quiz.difficulty}
+                    questionCount={quiz.questionCount}
+                    completedCount={quiz.completedCount}
+                    imageUrl={quiz.coverImage}
+                    completed={quiz.completed}
+                    score={quiz.score}
+                  />
+                </Link>
               ))}
             </div>
           )}
-        </div>
-      </main>
-      
-      <Footer />
+        </TabsContent>
+        
+        <TabsContent value="completed" className="mt-6">
+          {/* Similar content for completed quizzes tab */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredQuizzes.map(quiz => (
+              <Link to={`/attempt-quiz/${quiz.id}`} key={quiz.id}>
+                <QuizCard
+                  key={quiz.id}
+                  title={quiz.title}
+                  description={quiz.description}
+                  category={quiz.category}
+                  difficulty={quiz.difficulty}
+                  questionCount={quiz.questionCount}
+                  completedCount={quiz.completedCount}
+                  imageUrl={quiz.coverImage}
+                  completed={quiz.completed}
+                  score={quiz.score}
+                />
+              </Link>
+            ))}
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="incomplete" className="mt-6">
+          {/* Similar content for incomplete quizzes tab */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredQuizzes.map(quiz => (
+              <Link to={`/attempt-quiz/${quiz.id}`} key={quiz.id}>
+                <QuizCard
+                  key={quiz.id}
+                  title={quiz.title}
+                  description={quiz.description}
+                  category={quiz.category}
+                  difficulty={quiz.difficulty}
+                  questionCount={quiz.questionCount}
+                  completedCount={quiz.completedCount}
+                  imageUrl={quiz.coverImage}
+                  completed={quiz.completed}
+                  score={quiz.score}
+                />
+              </Link>
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
